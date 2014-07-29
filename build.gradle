@@ -1,0 +1,38 @@
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+
+test.doFirst {
+    ext.process = null
+    def proc = "./startServer.py --port 2021".execute(null,
+            new File("/Users/jackjack/Code/mtgMatcher/src/server/webdocs"))
+    sleep(1000)
+    try {
+        proc.exitValue()
+        throw new Exception("THERE WAS AN ERROR, SERVER DIDN'T START UP")
+    } catch (IllegalThreadStateException e) {
+        println "Server started on port 2021" //TODO: Make this configurable
+        ext.process = proc
+    }
+}
+
+test.doLast {
+    if (test.process != null) {
+        test.process.destroy()
+        println "Shut down test server"
+    }
+}
+
+//test {
+//    beforeTest { descriptor ->
+//        logger.lifecycle("Running test: " + descriptor)
+//    }
+//}
+
