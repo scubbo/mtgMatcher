@@ -1,0 +1,28 @@
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+
+<input type="text" id="messageToSend" />
+
+<table id='players'>
+    <tr>
+        <th>dciNumber</th>
+        <th>name</th>
+        <th>Send Message</th>
+    </tr>
+</table>
+
+<script>
+    $.get('/actions/private/getPlayers.py', function(data) {
+        $.each(data, function(index, value) {
+            $('#players').append('<tr x-data-regId="' + value['regId'] + '"><td>' + value['dciNumber'] + '</td><td>' + value['name'] + '</td><td><input type="button" class="sendMessageButton" value="Send Message"></td></tr>');
+        });
+        $('.sendMessageButton').click(function() {
+            regId = $(this).parent().parent().attr('x-data-regId');
+            $.post('/actions/private/sendMessage.py', {
+                'regId':regId,
+                'message':$('#messageToSend').val()
+            }, function (data) {
+                console.log(data);
+            });
+        });
+    });
+</script>
