@@ -1,0 +1,42 @@
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+    testCompile project(path: ':app', configuration: 'jarConfiguration')
+}
+
+
+test.doFirst {
+    ext.process = null
+    File webdocsDirectory = file(new File("${project(':server').projectDir}/webdocs"))
+    def proc = "./startServer.py --port 2021".execute(null,
+            webdocsDirectory)
+    sleep(1000)
+    try {
+        proc.exitValue()
+        throw new Exception("THERE WAS AN ERROR, SERVER DIDN'T START UP")
+    } catch (IllegalThreadStateException e) {
+        println "Server started on port 2021" //TODO: Make this configurable
+        ext.process = proc
+    }
+}
+
+task tearDownServer << {
+    if (test.process != null) {
+        test.process.destroy()
+        println "Test server successfully shut down"
+    }
+}
+
+test.finalizedBy(tearDownServer)
+
+//test {
+//    beforeTest { descriptor ->
+//        logger.lifecycle("Running test: " + descriptor)
+//    }
+//}
+
