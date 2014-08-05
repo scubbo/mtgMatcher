@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">MTGMatcher</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-
+    <string name="nameEntryHint">Please enter your name</string>
+    <string name="nameEntryLabel">Name:</string>
+    <string name="dciEntryLabel">DCI Number:</string>
+    <string name="dciEntryHint">Please enter your DCI Number</string>
+    <string name="updatePlayerDetailsButtonText">Save</string>
 </resources>

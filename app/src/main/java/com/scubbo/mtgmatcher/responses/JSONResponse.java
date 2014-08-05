@@ -3,6 +3,8 @@ package com.scubbo.mtgmatcher.responses;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Locale;
+
 public class JSONResponse {
 
     private JSONObject mJsonObject;
@@ -46,7 +48,7 @@ public class JSONResponse {
 
         @Override
         public String toString() {
-            return super.toString().toLowerCase();
+            return super.toString().toLowerCase(Locale.getDefault());
         }
 
         public static boolean contains(String s) {
