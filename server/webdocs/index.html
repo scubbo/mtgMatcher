@@ -12,7 +12,8 @@
 
 <script>
     $.get('/actions/private/getPlayers.py', function(data) {
-        $.each(data, function(index, value) {
+        players = data['data']
+        $.each(players, function(index, value) {
             $('#players').append('<tr x-data-regId="' + value['regId'] + '"><td>' + value['dciNumber'] + '</td><td>' + value['name'] + '</td><td><input type="button" class="sendMessageButton" value="Send Message"></td></tr>');
         });
         $('.sendMessageButton').click(function() {

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import os
 import sqlite3
 import buildResponse
 
@@ -6,7 +7,7 @@ print 'Content-type: application/json'
 print
 
 def main():
-    with sqlite3.connect('../data.db') as conn:
+    with sqlite3.connect('../' + os.environ['databaseFile']) as conn:
         conn.row_factory = sqlite3.Row
         c = conn.cursor()
 

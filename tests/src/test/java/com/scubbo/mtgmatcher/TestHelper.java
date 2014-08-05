@@ -25,10 +25,10 @@ public class TestHelper {
     public static URL makeRequestURL(String endpoint) {
         try {
             if (PRIVATE_ENDPOINTS.contains(endpoint)) {
-                return new URL(LOCAL_HOST_URL + "/private/" + endpoint + ".py");
+                return new URL(LOCAL_HOST_URL + "/actions/private/" + endpoint + ".py");
             }
             if (PUBLIC_ENDPOINTS.contains(endpoint)) {
-                return new URL(LOCAL_HOST_URL + "/public/" + endpoint + ".py");
+                return new URL(LOCAL_HOST_URL + "/actions/public/" + endpoint + ".py");
             }
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);

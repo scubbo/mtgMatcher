@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import argparse
 import os
 
 def main():
@@ -8,35 +9,42 @@ def main():
     if platform.system() == 'Windows':
         print 'Detected that you are running Windows. mtgMatcher was developed on Mac and tested on Linux - correct operation is not guaranteed on Windows machines.'
 
-    if os.geteuid() != 0:
+    parser = argparse.ArgumentParser(description="Installs dependencies and initializes database for server")
+    parser.add_argument('--databaseFile', default='data.db')
+    parser.add_argument('--databaseOnly', dest='databaseOnly', action='store_true')
+    parser.add_argument('--no-databaseOnly', dest='databaseOnly', action='store_false')
+    args = parser.parse_args()
+
+    if os.geteuid() != 0 and not args.databaseOnly:
         exit("install.py needs to be run as root")
 
-    try:
-        import pip
-    except ImportError:
-        print 'If you don\'t have pip installed, you\'re going to have a bad time.'
-        print 'You can try to download it yourself from http://pip.readthedocs.org/en/latest/installing.html, or this script can install it for you'
-        installPip()
-        import pip
+    if args.databaseOnly:
+        try:
+            import pip
+        except ImportError:
+            print 'If you don\'t have pip installed, you\'re going to have a bad time.'
+            print 'You can try to download it yourself from http://pip.readthedocs.org/en/latest/installing.html, or this script can install it for you'
+            installPip()
+            import pip
 
-    if not os.path.exists('data.db'):
-        setupDatabase()
+
+    if not os.path.exists(args.databaseFile):
+        setupDatabase(args.databaseFile)
         print 'Database created'
     else:
-        print 'Database file "data.db" already exists'
+        print 'ERROR: Database file "' + args.databaseFile + '" already exists'
+        return
 
-    try:
-        import qrcode
-    except ImportError:
-        yn = raw_input('Optional module qrcode is not installed - install it? [y/n] ')
-        if yn == 'y':
-            pip.main(['install','qrcode'])
+    if args.databaseOnly:
+        try:
             import qrcode
+        except ImportError:
+            yn = raw_input('Optional module qrcode is not installed - install it? [y/n] ')
+            if yn == 'y':
+                pip.main(['install','qrcode'])
+                import qrcode
 
-    print '''You still might need to change apache2 conf to restrict access to /actions/public (not yet implemented from this script)
-    Order deny,allow
-    Deny from all
-    Allow from dev.example.com'''
+    print 'Installation complete. Start the server with startServer.py'
 
 def installPip():
     import urllib2
@@ -66,7 +74,7 @@ def installPip():
 
     os.system(file_name)
 
-def setupDatabase(): 
+def setupDatabase(databaseFileName):
     try:
         import sqlite3
     except ImportError:
@@ -74,10 +82,10 @@ def setupDatabase():
         pip.main(['install','sqlite3'])
         import sqlite3
 
-    file('data.db','w').close()
-    os.chmod('data.db',0o660)
+    file(databaseFileName,'w').close()
+    os.chmod(databaseFileName,0o660)
 
-    conn = sqlite3.connect('data.db')
+    conn = sqlite3.connect(databaseFileName)
     c = conn.cursor()
 
     c.execute('CREATE TABLE players (name text, dciNumber text, regId text, secretToken text, regTime timestamp)')

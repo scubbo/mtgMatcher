@@ -1,5 +1,5 @@
 gcmSenderID
 apiKey
 testRegistrationId
-data.db
 *.pyc
+*.db

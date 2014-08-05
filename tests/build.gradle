@@ -13,9 +13,12 @@ dependencies {
 
 test.doFirst {
     ext.process = null
-    File webdocsDirectory = file(new File("${project(':server').projectDir}/webdocs"))
-    def proc = "./startServer.py --port 2021".execute(null,
-            webdocsDirectory)
+    File projectDir = file(new File("${project(':server').projectDir}")) //TODO: Define as variable
+    def setupProc = "./install.py --databaseFile gradleTesting.db --databaseOnly".execute(null, //TODO: Can we define "gradleTesting" as a variable?
+        projectDir)
+    setupProc.waitFor()
+    def proc = "./startServer.py --port 2021 --databaseFile gradleTesting.db".execute(null,
+            projectDir)
     sleep(1000)
     try {
         proc.exitValue()
@@ -31,13 +34,14 @@ task tearDownServer << {
         test.process.destroy()
         println "Test server successfully shut down"
     }
+    def databaseFileDeletionProc = "rm gradleTesting.db".execute(null,
+        file(new File("${project(':server').projectDir}")))
+    databaseFileDeletionProc.waitFor()
+    println "Testing database deleted"
 }
 
 test.finalizedBy(tearDownServer)
 
-//test {
-//    beforeTest { descriptor ->
-//        logger.lifecycle("Running test: " + descriptor)
-//    }
-//}
-
+test {
+    testLogging.showStandardStreams = true
+}
