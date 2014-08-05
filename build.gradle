@@ -15,9 +15,3 @@ allprojects {
 
 dependencies {
 }
-
-task test {
-    doFirst {
-        println 'hello, I am a tester'
-    }
-}

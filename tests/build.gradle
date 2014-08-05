@@ -6,6 +6,8 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.+'
+    testCompile project(path: ':app', configuration: 'jarConfiguration')
+    testCompile 'org.json:json:20090211' //TODO: but this is a dependency of :app as well!? >:(
 }
 
 
@@ -25,7 +27,7 @@ test.doFirst {
 }
 
 task tearDownServer << {
-    if (test.process != null) {
+    if (test.hasProperty('process')) {
         test.process.destroy()
         println "Test server successfully shut down"
     }

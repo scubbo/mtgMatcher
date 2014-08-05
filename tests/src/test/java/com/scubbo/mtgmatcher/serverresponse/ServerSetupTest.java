@@ -1,5 +1,6 @@
-package com.scubbo.mtgmatcher;
+package com.scubbo.mtgmatcher.serverresponse;
 
+import com.scubbo.mtgmatcher.TestHelper;
 import com.scubbo.mtgmatcher.responses.JSONResponse;
 import org.junit.Test;
 
@@ -12,7 +13,6 @@ import java.util.logging.Logger;
 import org.json.JSONException;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 public class ServerSetupTest {
 
@@ -26,25 +26,10 @@ public class ServerSetupTest {
     public void hitLocalhost() throws IOException, JSONException {
         String urlAsString = "http://localhost:" + testingPortNumber.toString() + "/actions/private/getPlayers.py";
         URL url = new URL(urlAsString);
-        final String responseFromUrl = getResponseFromUrl(url);
+        final String responseFromUrl = TestHelper.getResponseFromUrl(url);
 
         JSONResponse jsonResponse = new JSONResponse(responseFromUrl);
         assertTrue(jsonResponse.isSuccess());
-    }
-
-    private static String getResponseFromUrl(URL url) throws IOException {
-        String response = "";
-
-        URLConnection connection = url.openConnection();
-        DataInputStream dis = new DataInputStream(connection.getInputStream());
-        String inputLine;
-
-        while ((inputLine = dis.readLine()) != null) {
-            response += inputLine + "\r\n";
-        }
-        dis.close();
-
-        return response;
     }
 
 }
