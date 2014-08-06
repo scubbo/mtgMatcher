@@ -4,10 +4,8 @@ import com.scubbo.mtgmatcher.TestHelper;
 import com.scubbo.mtgmatcher.responses.JSONResponse;
 import org.junit.Test;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.logging.Logger;
 
 import org.json.JSONException;
@@ -17,8 +15,6 @@ import static org.junit.Assert.assertTrue;
 public class ServerSetupTest {
 
     private static final Logger logger = Logger.getLogger(ServerSetupTest.class.getName());
-
-    private static final String TAG = "In-Testing TAG";
 
     private static final Integer testingPortNumber = 2021;
 

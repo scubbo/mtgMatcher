@@ -11,6 +11,8 @@ allprojects {
     repositories {
         mavenCentral()
     }
+
+    apply plugin: 'idea'
 }
 
 dependencies {
