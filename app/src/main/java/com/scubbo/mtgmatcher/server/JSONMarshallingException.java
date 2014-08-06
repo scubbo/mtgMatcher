@@ -1,4 +1,4 @@
-package com.scubbo.mtgmatcher.responses;
+package com.scubbo.mtgmatcher.server;
 
 public class JSONMarshallingException extends RuntimeException {
     JSONMarshallingException(String message) {super(message);}

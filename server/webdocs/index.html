@@ -1,29 +1,50 @@
-<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<html>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 
-<input type="text" id="messageToSend" />
+    <span>Message to send (buttons appear below):</span><input type="text" id="messageToSend"/>
 
-<table id='players'>
-    <tr>
-        <th>dciNumber</th>
-        <th>name</th>
-        <th>Send Message</th>
-    </tr>
-</table>
+    <div id="addPlayerDiv">
+        <p>Add a player manually (this should only be used for debugging purposes and should not be visible in production</p>
+        <span>dciNumber:</span><input type="text" id="dciNumberDebugInput"/>
+        <span>name:</span><input type="text" id="nameDebugInput"/>
+        <span>regID:</span><input type="text" id="regIdDebugInput"/>
+        <input type="button" id="submitDebugButton" value="submit debug player"/>
+    </div>
 
-<script>
-    $.get('/actions/private/getPlayers.py', function(data) {
-        players = data['data']
-        $.each(players, function(index, value) {
-            $('#players').append('<tr x-data-regId="' + value['regId'] + '"><td>' + value['dciNumber'] + '</td><td>' + value['name'] + '</td><td><input type="button" class="sendMessageButton" value="Send Message"></td></tr>');
-        });
-        $('.sendMessageButton').click(function() {
-            regId = $(this).parent().parent().attr('x-data-regId');
-            $.post('/actions/private/sendMessage.py', {
-                'regId':regId,
-                'message':$('#messageToSend').val()
-            }, function (data) {
+
+    <table id='players'/>
+
+    <script>
+        function refreshPlayers() {
+            $.get('/actions/private/getPlayers.py', function(data) {
+                $('#players').html('<tr><th>dciNumber</th><th>name</th><th>Send Message</th></tr>');
+                players = data['data']
+                $.each(players, function(index, value) {
+                    $('#players').append('<tr x-data-regId="' + value['regId'] + '"><td>' + value['dciNumber'] + '</td><td>' + value['name'] + '</td><td><input type="button" class="sendMessageButton" value="Send Message"></td></tr>');
+                });
+                $('.sendMessageButton').click(function() {
+                    regId = $(this).parent().parent().attr('x-data-regId');
+                    $.post('/actions/private/sendMessage.py', {
+                        'regId':regId,
+                        'message':$('#messageToSend').val()
+                    }, function (data) {
+                        console.log(data);
+                    });
+                });
+            });
+        }
+
+        refreshPlayers();
+
+        $('#submitDebugButton').click(function() {
+            $.post('/actions/public/registerPlayer.py', {
+                dciNumber: $('#dciNumberDebugInput').val(),
+                name: $('#nameDebugInput').val(),
+                regId: $('#regIdDebugInput').val()
+            }, function(data) {
                 console.log(data);
+                refreshPlayers();
             });
         });
-    });
-</script>
+    </script>
+</html>

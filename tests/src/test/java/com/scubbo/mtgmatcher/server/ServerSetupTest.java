@@ -1,7 +1,6 @@
-package com.scubbo.mtgmatcher.serverresponse;
+package com.scubbo.mtgmatcher.server;
 
 import com.scubbo.mtgmatcher.TestHelper;
-import com.scubbo.mtgmatcher.responses.JSONResponse;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -24,7 +23,7 @@ public class ServerSetupTest {
         URL url = new URL(urlAsString);
         final String responseFromUrl = TestHelper.getResponseFromUrl(url);
 
-        JSONResponse jsonResponse = new JSONResponse(responseFromUrl);
+        GetPlayersJSONResponse jsonResponse = new GetPlayersJSONResponse(responseFromUrl);
         assertTrue(jsonResponse.isSuccess());
     }
 

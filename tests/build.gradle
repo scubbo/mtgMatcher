@@ -44,4 +44,9 @@ test.finalizedBy(tearDownServer)
 
 test {
     testLogging.showStandardStreams = true
+
+    beforeTest { descriptor ->
+        logger.lifecycle("Running: " + descriptor)
+    }
 }
+

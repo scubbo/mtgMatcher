@@ -1,13 +1,12 @@
-package com.scubbo.mtgmatcher.responses;
+package com.scubbo.mtgmatcher.server;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Locale;
 
-public class JSONResponse {
+public abstract class JSONResponse {
 
-    private JSONObject mJsonObject;
     private boolean mIsSuccess;
 
     public JSONResponse(String jsonString) throws JSONException {
@@ -15,6 +14,18 @@ public class JSONResponse {
     }
 
     public JSONResponse(JSONObject jsonObject) {
+        validate(jsonObject);
+
+        try {
+            this.mIsSuccess = ((String) jsonObject.get("status")).equals(POSSIBLE_STATUS.SUCCESS.toString());
+        } catch (JSONException e) {
+            // should not happen, since we have checked this in validate
+            e.printStackTrace();
+            throw new JSONMarshallingException(e);
+        }
+    }
+
+    public void validate(JSONObject jsonObject) {
         if (!(jsonObject.has("status"))) {
             throw new JSONMarshallingException("JSONObject " + jsonObject + " has no status");
         }
@@ -33,11 +44,7 @@ public class JSONResponse {
         String stringStatus = (String) status;
         if (!(POSSIBLE_STATUS.contains(stringStatus))) {
             throw new JSONMarshallingException("JSONObject " + jsonObject + " contains illegal status: " + status);
-        } else {
-            this.mIsSuccess = stringStatus.equals(POSSIBLE_STATUS.SUCCESS.toString());
         }
-
-        this.mJsonObject = jsonObject;
     }
 
     public boolean isSuccess() {return mIsSuccess;}
