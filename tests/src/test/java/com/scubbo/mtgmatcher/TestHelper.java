@@ -44,6 +44,7 @@ public class TestHelper {
             DataInputStream dis = new DataInputStream(connection.getInputStream());
             String inputLine;
 
+            //TODO: http://stackoverflow.com/questions/5611387/datainputstream-deprecated-readline-method
             while ((inputLine = dis.readLine()) != null) {
                 response += inputLine + "\r\n";
             }

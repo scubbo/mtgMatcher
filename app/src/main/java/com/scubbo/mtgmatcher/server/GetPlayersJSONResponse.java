@@ -8,6 +8,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+Apparently much of this can be done with
+Annotations JsonProperty, JsonCreator, etc.
+
+com.fasterxml.jackson.annotation
+ */
 public class GetPlayersJSONResponse extends JSONResponse {
     public final List<Player> mPlayerList;
 

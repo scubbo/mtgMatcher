@@ -6,15 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.scubbo.mtgmatcher.R;
 
-public class MainPageFragment extends FragmentWithTitle {
+public class AboutFragment extends FragmentWithTitle {
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                         Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.mainpagelayout, container, false);
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.aboutlayout, container, false);
     }
 
     @Override
     public String getTitle() {
-        return "Main Page Title";
+        return "About";
     }
 }

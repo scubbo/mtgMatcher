@@ -23,6 +23,7 @@ import java.util.Map;
 
 public class MainActivity extends Activity {
     // Blame http://developer.android.com/google/gcm/client.html
+    //TODO: This whole class should be canned, but keeping it around for reference
 
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 

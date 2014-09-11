@@ -6,4 +6,5 @@
     <string name="dciEntryLabel">DCI Number:</string>
     <string name="dciEntryHint">Please enter your DCI Number</string>
     <string name="updatePlayerDetailsButtonText">Save</string>
+    <string name="noPlayServicesWarning">You do not have play services!</string>
 </resources>
